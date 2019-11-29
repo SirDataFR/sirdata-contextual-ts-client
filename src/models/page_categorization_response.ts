@@ -101,6 +101,10 @@ export class PageCategorizationResponse extends Model {
         return list
     }
 
+    getCategoryIds(): number[] {
+        return this.getBrandSafetyCategoryIds().concat(this.getIABCategoryIds().concat(this.getCustomCategoryIds()));
+    }
+
     getKeywords(): string[] {
         var list = [];
         if (this.virtual_keywords == null) {

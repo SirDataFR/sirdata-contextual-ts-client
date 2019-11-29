@@ -17,5 +17,6 @@ export declare class PageCategorizationResponse extends Model {
     getIABCategoryIds(): number[];
     getCustomCategoryIds(): number[];
     getBrandSafetyCategoryIds(): number[];
+    getCategoryIds(): number[];
     getKeywords(): string[];
 }

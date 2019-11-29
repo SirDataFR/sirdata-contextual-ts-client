@@ -8,11 +8,10 @@
 <script type="text/javascript">
 
     var api = sirdata.NewContextual("gevyckejiydizosucetybdirh");
+    api.setTimeout(500);
     api.categorizeCurrentPage().then((result)=> {
-        console.info("iab", result.getIABCategoryIds());
-        console.info("custom", result.getCustomCategoryIds());
-        console.info("brand safety", result.getBrandSafetyCategoryIds());
-        console.info("keywords", result.getKeywords());
+        console.info("all", result);
+    }, (error)=>{
 
     });
 
