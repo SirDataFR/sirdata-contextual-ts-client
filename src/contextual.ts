@@ -2,7 +2,7 @@ import {HttpClient} from "./http";
 import {RestContextual} from "./rest/contextual";
 import {PageCategorizationResponse} from "./models/page_categorization_response";
 
-export let apiUrl = "https://contextual.sddan.com/api/v1/public";
+export let apiUrl = "https://contextual.sirdata.io/api/v1/public";
 
 let objectPerToken = new Map();
 let cacheUrlCategorized = new Map();
