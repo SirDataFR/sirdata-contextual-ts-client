@@ -57,7 +57,9 @@ export class Contextual {
 
     static GetCategorizeFromCache(url: string): PageCategorizationResponse {
         if (cacheUrlCategorized.has(url)) {
-            return new PageCategorizationResponse(cacheUrlCategorized.get(url));
+            let p = new PageCategorizationResponse();
+            p.load(cacheUrlCategorized.get(url));
+            return p;
         }
         return null;
     }

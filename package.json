@@ -1,6 +1,6 @@
 {
   "name": "sirdata-contextual-ts-client",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": " Official Typescript / Javascript client to interact with Sirdata NLP API",
   "main": "./lib/contextual.js",
   "typings": "./lib/contextual.d.ts",
