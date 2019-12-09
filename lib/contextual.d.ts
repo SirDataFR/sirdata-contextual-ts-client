@@ -11,4 +11,5 @@ export declare class Contextual {
     setTimeout(ms: number): this;
     get rest(): RestContextual;
     categorizeCurrentPage(hideError?: boolean): Promise<PageCategorizationResponse>;
+    getCategorizeFromCache(url: string): PageCategorizationResponse;
 }

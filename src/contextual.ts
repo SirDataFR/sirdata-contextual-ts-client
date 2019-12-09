@@ -1,6 +1,7 @@
 import {HttpClient} from "./http";
 import {RestContextual} from "./rest/contextual";
 import {PageCategorizationResponse} from "./models/page_categorization_response";
+import {GetCategorizeFromCache,SetCategorizeUrlCache} from './cache'
 
 export let apiUrl = "https://contextual.sddan.com/api/v1/public";
 
@@ -48,6 +49,10 @@ export class Contextual {
             }
             throw error;
         }
+    }
+
+    getCategorizeFromCache(url: string): PageCategorizationResponse {
+        return GetCategorizeFromCache(url);
     }
 }
 
