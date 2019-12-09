@@ -1,11 +1,11 @@
 import {HttpClient} from "./http";
 import {RestContextual} from "./rest/contextual";
 import {PageCategorizationResponse} from "./models/page_categorization_response";
-import {GetCategorizeFromCache,SetCategorizeUrlCache} from './cache'
 
 export let apiUrl = "https://contextual.sddan.com/api/v1/public";
 
 let objectPerToken = new Map();
+let cacheUrlCategorized = new Map();
 
 export function NewContextual(token: string): Contextual {
     if (objectPerToken.get(token) === undefined) {
@@ -51,8 +51,16 @@ export class Contextual {
         }
     }
 
-    getCategorizeFromCache(url: string): PageCategorizationResponse {
-        return GetCategorizeFromCache(url);
+    static SetCategorizeUrlCache(url: string, categorized: {}) {
+        cacheUrlCategorized.set(url, categorized);
     }
+
+    static GetCategorizeFromCache(url: string): PageCategorizationResponse {
+        if (cacheUrlCategorized.has(url)) {
+            return new PageCategorizationResponse(cacheUrlCategorized.get(url));
+        }
+        return null;
+    }
+
 }
 
