@@ -401,7 +401,23 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
         return list;
     };
     PageCategorizationResponse.prototype.getCategoryIds = function () {
-        return this.getBrandSafetyCategoryIds().concat(this.getIABCategoryIds().concat(this.getCustomCategoryIds()));
+        var list = [];
+        if (this.iab_categories == null) {
+            for (var i in this.iab_categories) {
+                list.push(String(this.iab_categories[i].unique_id));
+            }
+        }
+        if (this.custom_categories == null) {
+            for (var i in this.custom_categories) {
+                list.push("sd_" + String(this.custom_categories[i].unique_id));
+            }
+        }
+        if (this.brand_safety_categories == null) {
+            for (var i in this.brand_safety_categories) {
+                list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
+            }
+        }
+        return list;
     };
     PageCategorizationResponse.prototype.getKeywords = function () {
         var list = [];
@@ -511,8 +527,9 @@ var RestContextual = /** @class */ (function (_super) {
         pc.setContent(text);
         return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath, pc);
     };
-    RestContextual.prototype.categorizePageByUrl = function () {
-        return this.conf.get(new page_categorization_response_1.PageCategorizationResponse(), contextualPath);
+    RestContextual.prototype.categorizePageByUrl = function (url) {
+        url = url ? url : window.location.href;
+        return this.conf.get(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + "?url=" + url);
     };
     return RestContextual;
 }(rest_1.Rest));

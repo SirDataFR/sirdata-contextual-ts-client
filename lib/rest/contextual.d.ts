@@ -3,5 +3,5 @@ import { PageCategorizationResponse } from "../models/page_categorization_respon
 export declare class RestContextual extends Rest {
     categorizePageFromHTMLContent(html?: string): Promise<PageCategorizationResponse>;
     categorizePageFromTextContent(text?: string): Promise<PageCategorizationResponse>;
-    categorizePageByUrl(): Promise<PageCategorizationResponse>;
+    categorizePageByUrl(url: string): Promise<PageCategorizationResponse>;
 }

@@ -23,8 +23,9 @@ export class RestContextual extends Rest {
             pc) as Promise<PageCategorizationResponse>;
     }
 
-    categorizePageByUrl(): Promise<PageCategorizationResponse> {
-        return this.conf.get(new PageCategorizationResponse(), contextualPath) as Promise<PageCategorizationResponse>;
+    categorizePageByUrl(url: string): Promise<PageCategorizationResponse> {
+        url = url ? url : window.location.href;
+        return this.conf.get(new PageCategorizationResponse(), contextualPath + "?url=" + url) as Promise<PageCategorizationResponse>;
     }
 
 
