@@ -6,20 +6,19 @@ let contextualPath = '/contextual';
 
 export class RestContextual extends Rest {
 
-    categorizePageFromHTMLContent(html?: string): Promise<PageCategorizationResponse> {
+    categorizePageFromHTMLContent(html?: string, url?: string): Promise<PageCategorizationResponse> {
         html = html ? html : document.body.innerHTML;
         const pc = new PageContent();
         pc.setContent(html);
-        return this.conf.post(new PageCategorizationResponse(), contextualPath,
+        return this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""),
             pc) as Promise<PageCategorizationResponse>;
     }
 
-    categorizePageFromTextContent(text?: string): Promise<PageCategorizationResponse> {
-        // TODO improve method to get text from html
+    categorizePageFromTextContent(text?: string, url?: string): Promise<PageCategorizationResponse> {
         text = text ? text : document.body.innerText;
         const pc = new PageContent();
         pc.setContent(text);
-        return this.conf.post(new PageCategorizationResponse(), contextualPath,
+        return this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""),
             pc) as Promise<PageCategorizationResponse>;
     }
 

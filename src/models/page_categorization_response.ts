@@ -103,19 +103,19 @@ export class PageCategorizationResponse extends Model {
 
     getCategoryIds(): string[] {
         let list: string[] = [];
-        if (this.iab_categories == null) {
+        if (this.iab_categories != null) {
             for (let i in this.iab_categories) {
                 list.push(String(this.iab_categories[i].unique_id));
             }
         }
 
-        if (this.custom_categories == null) {
+        if (this.custom_categories != null) {
             for (let i in this.custom_categories) {
                 list.push("sd_" + String(this.custom_categories[i].unique_id));
             }
         }
 
-        if (this.brand_safety_categories == null) {
+        if (this.brand_safety_categories != null) {
             for (let i in this.brand_safety_categories) {
                 list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
             }

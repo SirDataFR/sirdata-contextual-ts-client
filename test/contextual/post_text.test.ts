@@ -8,6 +8,7 @@ describe("addMessage account", () => {
             let result = await new Contextual("gevyckejiydizosucetybdirh").rest.categorizePageFromTextContent(teroristText);
             expect(result.brand_safety_categories).toBeDefined();
             expect(result.brand_safety_categories.length).toBeGreaterThan(0);
+            expect(result.getCategoryIds().length).toBeGreaterThan(0)
         } catch (err) {
             catchErrorFunc(err);
         }
