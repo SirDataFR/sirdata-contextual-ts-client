@@ -402,17 +402,17 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
     };
     PageCategorizationResponse.prototype.getCategoryIds = function () {
         var list = [];
-        if (this.iab_categories == null) {
+        if (this.iab_categories != null) {
             for (var i in this.iab_categories) {
                 list.push(String(this.iab_categories[i].unique_id));
             }
         }
-        if (this.custom_categories == null) {
+        if (this.custom_categories != null) {
             for (var i in this.custom_categories) {
                 list.push("sd_" + String(this.custom_categories[i].unique_id));
             }
         }
-        if (this.brand_safety_categories == null) {
+        if (this.brand_safety_categories != null) {
             for (var i in this.brand_safety_categories) {
                 list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
             }
@@ -514,18 +514,17 @@ var RestContextual = /** @class */ (function (_super) {
     function RestContextual() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    RestContextual.prototype.categorizePageFromHTMLContent = function (html) {
+    RestContextual.prototype.categorizePageFromHTMLContent = function (html, url) {
         html = html ? html : document.body.innerHTML;
         var pc = new page_content_1.PageContent();
         pc.setContent(html);
-        return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath, pc);
+        return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
     };
-    RestContextual.prototype.categorizePageFromTextContent = function (text) {
-        // TODO improve method to get text from html
+    RestContextual.prototype.categorizePageFromTextContent = function (text, url) {
         text = text ? text : document.body.innerText;
         var pc = new page_content_1.PageContent();
         pc.setContent(text);
-        return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath, pc);
+        return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
     };
     RestContextual.prototype.categorizePageByUrl = function (url) {
         url = url ? url : window.location.href;
