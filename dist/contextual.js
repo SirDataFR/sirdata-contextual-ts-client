@@ -515,13 +515,10 @@ var RestContextual = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     RestContextual.prototype.categorizePageFromHTMLContent = function (html, url) {
-        html = html ? html : document.body.innerHTML;
-        var pc = new page_content_1.PageContent();
-        pc.setContent(html);
-        return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
+        return this.categorizePageFromTextContent(this.getTextFromDocument(html ? html : window.document.body), url);
     };
     RestContextual.prototype.categorizePageFromTextContent = function (text, url) {
-        text = text ? text : document.body.innerText;
+        text = text ? text : this.getTextFromDocument();
         var pc = new page_content_1.PageContent();
         pc.setContent(text);
         return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
@@ -529,6 +526,27 @@ var RestContextual = /** @class */ (function (_super) {
     RestContextual.prototype.categorizePageByUrl = function (url) {
         url = url ? url : window.location.href;
         return this.conf.get(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + "?url=" + url);
+    };
+    RestContextual.prototype.getTextFromDocument = function (body) {
+        body = body ? body : window.document.body;
+        var articleElements = body.getElementsByTagName("article");
+        if (articleElements.length > 0 && articleElements[0].innerText.length > 500
+            && articleElements[0].getElementsByTagName('h1').length > 0) {
+            return articleElements[0].innerText;
+        }
+        var h1Elements = body.getElementsByTagName('h1');
+        if (h1Elements.length > 0) {
+            var pSize = body.getElementsByTagName('p').length;
+            var element = h1Elements[0].parentElement;
+            while (element.parentElement && element.tagName != "BODY") {
+                element = element.parentElement;
+                if (element.getElementsByTagName('p').length >= pSize / 3
+                    && element.innerText.length > 4000) {
+                    return element.innerText;
+                }
+            }
+        }
+        return body.innerText;
     };
     return RestContextual;
 }(rest_1.Rest));

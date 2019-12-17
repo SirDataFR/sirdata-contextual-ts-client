@@ -6,16 +6,12 @@ let contextualPath = '/contextual';
 
 export class RestContextual extends Rest {
 
-    categorizePageFromHTMLContent(html?: string, url?: string): Promise<PageCategorizationResponse> {
-        html = html ? html : document.body.innerHTML;
-        const pc = new PageContent();
-        pc.setContent(html);
-        return this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""),
-            pc) as Promise<PageCategorizationResponse>;
+    categorizePageFromHTMLContent(html?: HTMLElement, url?: string): Promise<PageCategorizationResponse> {
+        return this.categorizePageFromTextContent(this.getTextFromDocument(html ? html : window.document.body), url)
     }
 
     categorizePageFromTextContent(text?: string, url?: string): Promise<PageCategorizationResponse> {
-        text = text ? text : document.body.innerText;
+        text = text ? text : this.getTextFromDocument();
         const pc = new PageContent();
         pc.setContent(text);
         return this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""),
@@ -27,5 +23,28 @@ export class RestContextual extends Rest {
         return this.conf.get(new PageCategorizationResponse(), contextualPath + "?url=" + url) as Promise<PageCategorizationResponse>;
     }
 
+    getTextFromDocument(body?: HTMLElement): string {
+        body = body ? body : window.document.body;
 
+        const articleElements = body.getElementsByTagName("article");
+        if (articleElements.length > 0 && articleElements[0].innerText.length > 500
+            && articleElements[0].getElementsByTagName('h1').length > 0) {
+            return articleElements[0].innerText;
+        }
+
+        const h1Elements = body.getElementsByTagName('h1');
+        if (h1Elements.length > 0) {
+            const pSize = body.getElementsByTagName('p').length;
+            let element = h1Elements[0].parentElement;
+            while (element.parentElement && element.tagName != "BODY") {
+                element = element.parentElement;
+                if (element.getElementsByTagName('p').length >= pSize / 3
+                    && element.innerText.length > 4000) {
+                    return element.innerText;
+                }
+            }
+        }
+
+        return body.innerText;
+    }
 }

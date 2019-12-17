@@ -5,7 +5,7 @@ jest.setTimeout(60000);
 describe("addMessage account", () => {
     it("user creation api", async () => {
         try {
-            let result = await new Contextual("gevyckejiydizosucetybdirh").rest.categorizePageFromTextContent(teroristText);
+            let result = await new Contextual("gevyckejiydizosucetybdirh").rest.categorizePageFromTextContent(teroristText, 'http://teror.notexist.com/');
             expect(result.brand_safety_categories).toBeDefined();
             expect(result.brand_safety_categories.length).toBeGreaterThan(0);
             expect(result.getCategoryIds().length).toBeGreaterThan(0)
