@@ -11,6 +11,7 @@ export class RestContextual extends Rest {
     }
 
     categorizePageFromTextContent(text?: string, url?: string): Promise<PageCategorizationResponse> {
+        url = !url && window.location.href.length > 10 ? window.location.href : url;
         text = text ? text : this.getTextFromDocument();
         const pc = new PageContent();
         pc.setContent(text);

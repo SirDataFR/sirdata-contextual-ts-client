@@ -1,6 +1,7 @@
 import {VirtualKeyword} from "./virtual_keyword";
 import {Model} from "./model";
 import {Category} from "./category";
+import {Contextual} from "../contextual";
 
 export class PageCategorizationResponse extends Model {
     private _brand_safety_categories: Category[] = null;
@@ -74,7 +75,9 @@ export class PageCategorizationResponse extends Model {
             return [];
         }
         for (let i in this.iab_categories) {
-            list.push(this.iab_categories[i].unique_id);
+            if (this.iab_categories[i].relevancy >= Contextual.minRelevancy) {
+                list.push(this.iab_categories[i].unique_id);
+            }
         }
         return list
     }
@@ -85,7 +88,9 @@ export class PageCategorizationResponse extends Model {
             return [];
         }
         for (let i in this.custom_categories) {
-            list.push(this.custom_categories[i].unique_id);
+            if (this.custom_categories[i].relevancy >= Contextual.minRelevancy) {
+                list.push(this.custom_categories[i].unique_id);
+            }
         }
         return list
     }
@@ -96,7 +101,9 @@ export class PageCategorizationResponse extends Model {
             return [];
         }
         for (let i in this.brand_safety_categories) {
-            list.push(this.brand_safety_categories[i].unique_id);
+            if (this.brand_safety_categories[i].relevancy >= Contextual.minBrandSafetyRelevancy) {
+                list.push(this.brand_safety_categories[i].unique_id);
+            }
         }
         return list
     }
@@ -105,19 +112,25 @@ export class PageCategorizationResponse extends Model {
         let list: string[] = [];
         if (this.iab_categories != null) {
             for (let i in this.iab_categories) {
-                list.push(String(this.iab_categories[i].unique_id));
+                if (this.iab_categories[i].relevancy >= Contextual.minRelevancy) {
+                    list.push(String(this.iab_categories[i].unique_id));
+                }
             }
         }
 
         if (this.custom_categories != null) {
             for (let i in this.custom_categories) {
-                list.push("sd_" + String(this.custom_categories[i].unique_id));
+                if (this.custom_categories[i].relevancy >= Contextual.minRelevancy) {
+                    list.push("sd_" + String(this.custom_categories[i].unique_id));
+                }
             }
         }
 
         if (this.brand_safety_categories != null) {
             for (let i in this.brand_safety_categories) {
-                list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
+                if (this.brand_safety_categories[i].relevancy >= Contextual.minBrandSafetyRelevancy) {
+                    list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
+                }
             }
         }
 
@@ -130,7 +143,9 @@ export class PageCategorizationResponse extends Model {
             return [];
         }
         for (let i in this.virtual_keywords) {
-            list.push(this.virtual_keywords[i].name);
+            if (this.virtual_keywords[i].relevancy >= Contextual.minRelevancy) {
+                list.push(this.virtual_keywords[i].name);
+            }
         }
         return list
     }

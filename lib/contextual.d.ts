@@ -6,6 +6,8 @@ export declare class Contextual {
     private _http;
     private _restContextual;
     private _currentPagePromise;
+    static minRelevancy: number;
+    static minBrandSafetyRelevancy: number;
     constructor(token: string);
     setApiUrl(url: string): Contextual;
     setTimeout(ms: number): this;

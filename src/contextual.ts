@@ -19,6 +19,9 @@ export class Contextual {
     private _restContextual: RestContextual = null;
     private _currentPagePromise: Promise<PageCategorizationResponse> = null;
 
+    static minRelevancy = 0.5;
+    static minBrandSafetyRelevancy = 0.2;
+
     constructor(token: string) {
         this._http = new HttpClient(token);
     }

@@ -9,5 +9,5 @@ export class Category extends Model {
     tier3: string;
     tier4: string;
     tier5: string;
-    revelency: number;
+    relevancy: number;
 }

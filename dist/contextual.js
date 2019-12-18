@@ -106,6 +106,8 @@ var Contextual = /** @class */ (function () {
         }
         return null;
     };
+    Contextual.minRelevancy = 0.5;
+    Contextual.minBrandSafetyRelevancy = 0.2;
     return Contextual;
 }());
 exports.Contextual = Contextual;
@@ -292,6 +294,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var virtual_keyword_1 = require("./virtual_keyword");
 var model_1 = require("./model");
 var category_1 = require("./category");
+var contextual_1 = require("../contextual");
 var PageCategorizationResponse = /** @class */ (function (_super) {
     __extends(PageCategorizationResponse, _super);
     function PageCategorizationResponse() {
@@ -376,7 +379,9 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
             return [];
         }
         for (var i in this.iab_categories) {
-            list.push(this.iab_categories[i].unique_id);
+            if (this.iab_categories[i].relevancy >= contextual_1.Contextual.minRelevancy) {
+                list.push(this.iab_categories[i].unique_id);
+            }
         }
         return list;
     };
@@ -386,7 +391,9 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
             return [];
         }
         for (var i in this.custom_categories) {
-            list.push(this.custom_categories[i].unique_id);
+            if (this.custom_categories[i].relevancy >= contextual_1.Contextual.minRelevancy) {
+                list.push(this.custom_categories[i].unique_id);
+            }
         }
         return list;
     };
@@ -396,7 +403,9 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
             return [];
         }
         for (var i in this.brand_safety_categories) {
-            list.push(this.brand_safety_categories[i].unique_id);
+            if (this.brand_safety_categories[i].relevancy >= contextual_1.Contextual.minBrandSafetyRelevancy) {
+                list.push(this.brand_safety_categories[i].unique_id);
+            }
         }
         return list;
     };
@@ -404,17 +413,23 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
         var list = [];
         if (this.iab_categories != null) {
             for (var i in this.iab_categories) {
-                list.push(String(this.iab_categories[i].unique_id));
+                if (this.iab_categories[i].relevancy >= contextual_1.Contextual.minRelevancy) {
+                    list.push(String(this.iab_categories[i].unique_id));
+                }
             }
         }
         if (this.custom_categories != null) {
             for (var i in this.custom_categories) {
-                list.push("sd_" + String(this.custom_categories[i].unique_id));
+                if (this.custom_categories[i].relevancy >= contextual_1.Contextual.minRelevancy) {
+                    list.push("sd_" + String(this.custom_categories[i].unique_id));
+                }
             }
         }
         if (this.brand_safety_categories != null) {
             for (var i in this.brand_safety_categories) {
-                list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
+                if (this.brand_safety_categories[i].relevancy >= contextual_1.Contextual.minBrandSafetyRelevancy) {
+                    list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
+                }
             }
         }
         return list;
@@ -425,7 +440,9 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
             return [];
         }
         for (var i in this.virtual_keywords) {
-            list.push(this.virtual_keywords[i].name);
+            if (this.virtual_keywords[i].relevancy >= contextual_1.Contextual.minRelevancy) {
+                list.push(this.virtual_keywords[i].name);
+            }
         }
         return list;
     };
@@ -433,7 +450,7 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
 }(model_1.Model));
 exports.PageCategorizationResponse = PageCategorizationResponse;
 
-},{"./category":3,"./model":4,"./virtual_keyword":7}],6:[function(require,module,exports){
+},{"../contextual":1,"./category":3,"./model":4,"./virtual_keyword":7}],6:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -518,6 +535,7 @@ var RestContextual = /** @class */ (function (_super) {
         return this.categorizePageFromTextContent(this.getTextFromDocument(html ? html : window.document.body), url);
     };
     RestContextual.prototype.categorizePageFromTextContent = function (text, url) {
+        url = !url && window.location.href.length > 10 ? window.location.href : url;
         text = text ? text : this.getTextFromDocument();
         var pc = new page_content_1.PageContent();
         pc.setContent(text);
