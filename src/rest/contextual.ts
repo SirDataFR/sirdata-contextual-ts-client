@@ -13,14 +13,20 @@ export class RestContextual extends Rest {
     categorizePageFromTextContent(text?: string, url?: string): Promise<PageCategorizationResponse> {
         url = !url && window.location.href.length > 10 ? window.location.href : url;
         text = text ? text : this.getTextFromDocument();
+        if (text.length < 300) {
+            return this.categorizePageByUrl();
+        }
         const pc = new PageContent();
         pc.setContent(text);
         return this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""),
             pc) as Promise<PageCategorizationResponse>;
     }
 
-    categorizePageByUrl(url: string): Promise<PageCategorizationResponse> {
+    categorizePageByUrl(url?: string): Promise<PageCategorizationResponse> {
         url = url ? url : window.location.href;
+        if (url == "") {
+            throw new DOMException("window.location.href is empty. At least an url is mandatory, contact support.");
+        }
         return this.conf.get(new PageCategorizationResponse(), contextualPath + "?url=" + url) as Promise<PageCategorizationResponse>;
     }
 
@@ -28,7 +34,7 @@ export class RestContextual extends Rest {
         body = body ? body : window.document.body;
 
         const articleElements = body.getElementsByTagName("article");
-        if (articleElements.length > 0 && articleElements[0].innerText.length > 500
+        if (articleElements.length > 0 && articleElements[0].innerText.length > 300
             && articleElements[0].getElementsByTagName('h1').length > 0) {
             return articleElements[0].innerText;
         }

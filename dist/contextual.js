@@ -537,18 +537,24 @@ var RestContextual = /** @class */ (function (_super) {
     RestContextual.prototype.categorizePageFromTextContent = function (text, url) {
         url = !url && window.location.href.length > 10 ? window.location.href : url;
         text = text ? text : this.getTextFromDocument();
+        if (text.length < 300) {
+            return this.categorizePageByUrl();
+        }
         var pc = new page_content_1.PageContent();
         pc.setContent(text);
         return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
     };
     RestContextual.prototype.categorizePageByUrl = function (url) {
         url = url ? url : window.location.href;
+        if (url == "") {
+            throw new DOMException("window.location.href is empty. At least an url is mandatory, contact support.");
+        }
         return this.conf.get(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + "?url=" + url);
     };
     RestContextual.prototype.getTextFromDocument = function (body) {
         body = body ? body : window.document.body;
         var articleElements = body.getElementsByTagName("article");
-        if (articleElements.length > 0 && articleElements[0].innerText.length > 500
+        if (articleElements.length > 0 && articleElements[0].innerText.length > 300
             && articleElements[0].getElementsByTagName('h1').length > 0) {
             return articleElements[0].innerText;
         }
