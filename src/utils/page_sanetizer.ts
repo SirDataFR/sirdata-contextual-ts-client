@@ -9,13 +9,12 @@ export class PageSanetizer {
         if (fullText.length < MinTextSize) {
             return fullText;
         }
-
-        tagToRemove.forEach((tagName) => {
-            let tags = body.getElementsByTagName(tagName);
+        for (let tagIndex in tagToRemove) {
+            let tags = body.getElementsByTagName(tagToRemove[tagIndex]);
             for (let i = 0; i < tags.length; i++) {
                 tags.item(i).remove()
             }
-        });
+        }
 
         if (body.innerText.length < MinTextSize) {
             return body.innerText;
