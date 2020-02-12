@@ -1,5 +1,5 @@
 const MinTextSize = 300;
-const tagToRemove = ["aside", "iframe", "footer", "nav", "form"];
+const tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input"];
 
 export class PageSanetizer {
 
