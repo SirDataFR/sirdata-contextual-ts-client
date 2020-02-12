@@ -623,7 +623,7 @@ exports.Rest = Rest;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var MinTextSize = 300;
-var tagToRemove = ["aside", "iframe", "footer", "nav", "form"];
+var tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input"];
 var PageSanetizer = /** @class */ (function () {
     function PageSanetizer() {
     }
