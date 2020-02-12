@@ -1,5 +1,6 @@
 const MinTextSize = 300;
 const tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input"];
+const classToRemove = ["GoogleActiveViewInnerContainer", "GoogleActiveViewElement"];
 
 export class PageSanetizer {
 
@@ -9,8 +10,14 @@ export class PageSanetizer {
         if (fullText.length < MinTextSize) {
             return fullText;
         }
-        for (let tagIndex in tagToRemove) {
-            let tags = body.getElementsByTagName(tagToRemove[tagIndex]);
+        for (let i in tagToRemove) {
+            let tags = body.getElementsByTagName(tagToRemove[i]);
+            for (let i = 0; i < tags.length; i++) {
+                tags.item(i).remove()
+            }
+        }
+        for (let i in classToRemove) {
+            let tags = body.getElementsByClassName(classToRemove[i]);
             for (let i = 0; i < tags.length; i++) {
                 tags.item(i).remove()
             }
