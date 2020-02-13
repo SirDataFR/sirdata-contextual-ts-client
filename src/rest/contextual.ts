@@ -25,6 +25,9 @@ export class RestContextual extends Rest {
 
     categorizePageByUrl(url?: string): Promise<PageCategorizationResponse> {
         url = url ? url : window.location.href;
+        if (window.top !== window.self && document.referrer) {
+            url = document.referrer
+        }
         if (url == "") {
             throw new DOMException("window.location.href is empty. At least an url is mandatory, contact support.");
         }
