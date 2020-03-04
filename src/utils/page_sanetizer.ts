@@ -9,7 +9,9 @@ export class PageSanetizer {
         if (!element && window.top !== window.self ) {
             return ""
         }
-        let body = element ? element.cloneNode(true) as HTMLElement : window.document.body.cloneNode(true) as HTMLElement;
+        let body = element ?
+            element.cloneNode(true) as HTMLElement :
+            (window === window.parent ? window : window.parent).document.body.cloneNode(true) as HTMLElement;
         let fullText = body.innerText;
         if (fullText.length < MinTextSize) {
             return fullText;
