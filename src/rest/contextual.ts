@@ -7,11 +7,11 @@ let contextualPath = '/contextual';
 
 export class RestContextual extends Rest {
 
-    categorizePageFromHTMLContent(html?: HTMLElement, url?: string): Promise<PageCategorizationResponse> {
+    async categorizePageFromHTMLContent(html?: HTMLElement, url?: string): Promise<PageCategorizationResponse> {
         return this.categorizePageFromTextContent(PageSanetizer.getTextFromDocument(html ? html : document.body), url)
     }
 
-    categorizePageFromTextContent(text?: string, url?: string): Promise<PageCategorizationResponse> {
+    async categorizePageFromTextContent(text?: string, url?: string): Promise<PageCategorizationResponse> {
         url = !url && document.location.href.length > 10 ? document.location.href : url;
         text = text ? text : PageSanetizer.getTextFromDocument();
         if (text.length < 300) {
@@ -19,11 +19,14 @@ export class RestContextual extends Rest {
         }
         const pc = new PageContent();
         pc.setContent(text);
-        return this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""),
-            pc) as Promise<PageCategorizationResponse>;
+        const resp = await this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
+        if (!resp) {
+            return new PageCategorizationResponse();
+        }
+        return resp as PageCategorizationResponse
     }
 
-    categorizePageByUrl(url?: string): Promise<PageCategorizationResponse> {
+    async categorizePageByUrl(url?: string): Promise<PageCategorizationResponse> {
         url = url ? url : document.location.href;
         if (window.top !== window.self && document.referrer) {
             url = document.referrer

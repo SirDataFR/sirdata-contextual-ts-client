@@ -411,21 +411,21 @@ var PageCategorizationResponse = /** @class */ (function (_super) {
     };
     PageCategorizationResponse.prototype.getCategoryIds = function () {
         var list = [];
-        if (this.iab_categories != null) {
+        if (this.iab_categories) {
             for (var i in this.iab_categories) {
                 if (this.iab_categories[i].relevancy >= contextual_1.Contextual.minRelevancy) {
                     list.push(String(this.iab_categories[i].unique_id));
                 }
             }
         }
-        if (this.custom_categories != null) {
+        if (this.custom_categories) {
             for (var i in this.custom_categories) {
                 if (this.custom_categories[i].relevancy >= contextual_1.Contextual.minRelevancy) {
                     list.push("sd_" + String(this.custom_categories[i].unique_id));
                 }
             }
         }
-        if (this.brand_safety_categories != null) {
+        if (this.brand_safety_categories) {
             for (var i in this.brand_safety_categories) {
                 if (this.brand_safety_categories[i].relevancy >= contextual_1.Contextual.minBrandSafetyRelevancy) {
                     list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
@@ -521,6 +521,42 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var rest_1 = require("./rest");
 var page_categorization_response_1 = require("../models/page_categorization_response");
@@ -533,27 +569,49 @@ var RestContextual = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     RestContextual.prototype.categorizePageFromHTMLContent = function (html, url) {
-        return this.categorizePageFromTextContent(page_sanetizer_1.PageSanetizer.getTextFromDocument(html ? html : document.body), url);
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.categorizePageFromTextContent(page_sanetizer_1.PageSanetizer.getTextFromDocument(html ? html : document.body), url)];
+            });
+        });
     };
     RestContextual.prototype.categorizePageFromTextContent = function (text, url) {
-        url = !url && document.location.href.length > 10 ? document.location.href : url;
-        text = text ? text : page_sanetizer_1.PageSanetizer.getTextFromDocument();
-        if (text.length < 300) {
-            return this.categorizePageByUrl();
-        }
-        var pc = new page_content_1.PageContent();
-        pc.setContent(text);
-        return this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
+        return __awaiter(this, void 0, void 0, function () {
+            var pc, resp;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = !url && document.location.href.length > 10 ? document.location.href : url;
+                        text = text ? text : page_sanetizer_1.PageSanetizer.getTextFromDocument();
+                        if (text.length < 300) {
+                            return [2 /*return*/, this.categorizePageByUrl()];
+                        }
+                        pc = new page_content_1.PageContent();
+                        pc.setContent(text);
+                        return [4 /*yield*/, this.conf.post(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc)];
+                    case 1:
+                        resp = _a.sent();
+                        if (!resp) {
+                            return [2 /*return*/, new page_categorization_response_1.PageCategorizationResponse()];
+                        }
+                        return [2 /*return*/, resp];
+                }
+            });
+        });
     };
     RestContextual.prototype.categorizePageByUrl = function (url) {
-        url = url ? url : document.location.href;
-        if (window.top !== window.self && document.referrer) {
-            url = document.referrer;
-        }
-        if (url == "") {
-            throw new DOMException("window.location.href is empty. At least an url is mandatory, contact support.");
-        }
-        return this.conf.get(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + "?url=" + url);
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                url = url ? url : document.location.href;
+                if (window.top !== window.self && document.referrer) {
+                    url = document.referrer;
+                }
+                if (url == "") {
+                    throw new DOMException("window.location.href is empty. At least an url is mandatory, contact support.");
+                }
+                return [2 /*return*/, this.conf.get(new page_categorization_response_1.PageCategorizationResponse(), contextualPath + "?url=" + url)];
+            });
+        });
     };
     return RestContextual;
 }(rest_1.Rest));

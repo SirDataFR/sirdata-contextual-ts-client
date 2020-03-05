@@ -110,7 +110,7 @@ export class PageCategorizationResponse extends Model {
 
     getCategoryIds(): string[] {
         let list: string[] = [];
-        if (this.iab_categories != null) {
+        if (this.iab_categories) {
             for (let i in this.iab_categories) {
                 if (this.iab_categories[i].relevancy >= Contextual.minRelevancy) {
                     list.push(String(this.iab_categories[i].unique_id));
@@ -118,7 +118,7 @@ export class PageCategorizationResponse extends Model {
             }
         }
 
-        if (this.custom_categories != null) {
+        if (this.custom_categories) {
             for (let i in this.custom_categories) {
                 if (this.custom_categories[i].relevancy >= Contextual.minRelevancy) {
                     list.push("sd_" + String(this.custom_categories[i].unique_id));
@@ -126,7 +126,7 @@ export class PageCategorizationResponse extends Model {
             }
         }
 
-        if (this.brand_safety_categories != null) {
+        if (this.brand_safety_categories) {
             for (let i in this.brand_safety_categories) {
                 if (this.brand_safety_categories[i].relevancy >= Contextual.minBrandSafetyRelevancy) {
                     list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
