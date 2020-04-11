@@ -1,5 +1,5 @@
 const MinTextSize = 300;
-const tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input"];
+const tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input", "ul"];
 const classToRemove = ["GoogleActiveViewInnerContainer", "GoogleActiveViewElement"];
 
 export class PageSanetizer {
