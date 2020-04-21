@@ -21,6 +21,7 @@ export class Contextual {
 
     static minRelevancy = 0.5;
     static minBrandSafetyRelevancy = 0.2;
+    static minModeledRelevancy = 0.3;
 
     constructor(token: string) {
         this._http = new HttpClient(token);

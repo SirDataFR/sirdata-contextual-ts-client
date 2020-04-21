@@ -1,10 +1,12 @@
 import { VirtualKeyword } from "./virtual_keyword";
 import { Model } from "./model";
 import { Category } from "./category";
+import { ModeledCategory } from "./modeled_category";
 export declare class PageCategorizationResponse extends Model {
     private _brand_safety_categories;
     private _iab_categories;
     private _custom_categories;
+    private _modeled_categories;
     private _virtual_keywords;
     get brand_safety_categories(): Category[];
     set brand_safety_categories(values: Category[]);
@@ -12,6 +14,8 @@ export declare class PageCategorizationResponse extends Model {
     set iab_categories(values: Category[]);
     get custom_categories(): Category[];
     set custom_categories(values: Category[]);
+    get modeled_categories(): ModeledCategory[];
+    set modeled_categories(values: ModeledCategory[]);
     get virtual_keywords(): VirtualKeyword[];
     set virtual_keywords(values: VirtualKeyword[]);
     getIABCategoryIds(): number[];

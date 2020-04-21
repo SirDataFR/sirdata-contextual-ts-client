@@ -2,11 +2,13 @@ import {VirtualKeyword} from "./virtual_keyword";
 import {Model} from "./model";
 import {Category} from "./category";
 import {Contextual} from "../contextual";
+import {ModeledCategory} from "./modeled_category";
 
 export class PageCategorizationResponse extends Model {
     private _brand_safety_categories: Category[] = null;
     private _iab_categories: Category[] = null;
     private _custom_categories: Category[] = null;
+    private _modeled_categories: ModeledCategory[] = null;
     private _virtual_keywords: VirtualKeyword[] = null;
 
     get brand_safety_categories(): Category[] {
@@ -52,6 +54,21 @@ export class PageCategorizationResponse extends Model {
             list.push(new Category(values[i]));
         }
         this._custom_categories = list;
+    }
+
+    get modeled_categories(): ModeledCategory[] {
+        return this._modeled_categories ? this._modeled_categories : [];
+    }
+
+    set modeled_categories(values: ModeledCategory[]) {
+        if (!values) {
+            return;
+        }
+        let list = [];
+        for (let i in values) {
+            list.push(new ModeledCategory(values[i]));
+        }
+        this._modeled_categories = list;
     }
 
     get virtual_keywords(): VirtualKeyword[] {
@@ -130,6 +147,14 @@ export class PageCategorizationResponse extends Model {
             for (let i in this.brand_safety_categories) {
                 if (this.brand_safety_categories[i].relevancy >= Contextual.minBrandSafetyRelevancy) {
                     list.push("bs_" + String(this.brand_safety_categories[i].unique_id));
+                }
+            }
+        }
+
+        if (this.modeled_categories) {
+            for (let i in this.modeled_categories) {
+                if (this.modeled_categories[i].relevancy >= Contextual.minModeledRelevancy) {
+                    list.push("mc_" + String(this.modeled_categories[i].unique_id));
                 }
             }
         }
