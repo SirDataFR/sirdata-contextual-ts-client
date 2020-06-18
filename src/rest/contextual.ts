@@ -3,9 +3,9 @@ import {PageCategorizationResponse} from "../models/page_categorization_response
 import {PageContent} from "../models/page_content";
 import {PageSanetizer} from "../utils/page_sanetizer";
 
-let contextualPath = '/contextual';
-
 export class RestContextual extends Rest {
+
+    static contextualPath = '/contextual';
 
     async categorizePageFromHTMLContent(html?: HTMLElement, url?: string): Promise<PageCategorizationResponse> {
         return this.categorizePageFromTextContent(PageSanetizer.getTextFromDocument(html ? html : document.body), url)
@@ -19,7 +19,7 @@ export class RestContextual extends Rest {
         }
         const pc = new PageContent();
         pc.setContent(text);
-        const resp = await this.conf.post(new PageCategorizationResponse(), contextualPath + (url ? "?url=" + url : ""), pc);
+        const resp = await this.conf.post(new PageCategorizationResponse(), RestContextual.contextualPath + (url ? "?url=" + url : ""), pc);
         if (!resp) {
             return new PageCategorizationResponse();
         }
@@ -34,6 +34,6 @@ export class RestContextual extends Rest {
         if (url == "") {
             throw new DOMException("window.location.href is empty. At least an url is mandatory, contact support.");
         }
-        return this.conf.get(new PageCategorizationResponse(), contextualPath + "?url=" + url) as Promise<PageCategorizationResponse>;
+        return this.conf.get(new PageCategorizationResponse(), RestContextual.contextualPath + "?url=" + url) as Promise<PageCategorizationResponse>;
     }
 }
