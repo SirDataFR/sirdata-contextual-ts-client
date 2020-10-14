@@ -1,31 +1,26 @@
 const MinTextSize = 300;
-const tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input", "ul"];
-const classToRemove = ["GoogleActiveViewInnerContainer", "GoogleActiveViewElement"];
+const tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input", "ul",
+    ".GoogleActiveViewInnerContainer", ".GoogleActiveViewElement",
+    "div[class=\"rte\"]", "[class*='footer'i]"];
 
 export class PageSanetizer {
 
     static getTextFromDocument(element?: HTMLElement): string {
         // iframe context, can't access to text
-        if (!element && window.top !== window.self ) {
+        if (!element && window.top !== window.self) {
             return ""
         }
         let body = element ?
             element.cloneNode(true) as HTMLElement :
-            (window.parent !== undefined  && window.parent.document && window.parent.document.body
-                && window.parent.document.body.innerText.length > MinTextSize
+            (window.parent !== undefined && window.parent.document && window.parent.document.body
+            && window.parent.document.body.innerText.length > MinTextSize
                 ? window.parent : window).document.body.cloneNode(true) as HTMLElement;
         let fullText = body.innerText;
         if (fullText.length < MinTextSize) {
             return fullText;
         }
         for (let i in tagToRemove) {
-            let tags = body.getElementsByTagName(tagToRemove[i]);
-            for (let i = 0; i < tags.length; i++) {
-                tags.item(i).remove()
-            }
-        }
-        for (let i in classToRemove) {
-            let tags = body.getElementsByClassName(classToRemove[i]);
+            let tags = body.querySelectorAll(tagToRemove[i]);
             for (let i = 0; i < tags.length; i++) {
                 tags.item(i).remove()
             }
