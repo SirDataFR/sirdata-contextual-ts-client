@@ -737,8 +737,9 @@ exports.Rest = Rest;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var MinTextSize = 300;
-var tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input", "ul"];
-var classToRemove = ["GoogleActiveViewInnerContainer", "GoogleActiveViewElement"];
+var tagToRemove = ["aside", "iframe", "footer", "nav", "form", "script", "input", "ul",
+    ".GoogleActiveViewInnerContainer", ".GoogleActiveViewElement", ".sidebar",
+    "div[class=\"rte\"]", "[class*='footer'i]"];
 var PageSanetizer = /** @class */ (function () {
     function PageSanetizer() {
     }
@@ -757,15 +758,9 @@ var PageSanetizer = /** @class */ (function () {
             return fullText;
         }
         for (var i in tagToRemove) {
-            var tags = body.getElementsByTagName(tagToRemove[i]);
+            var tags = body.querySelectorAll(tagToRemove[i]);
             for (var i_1 = 0; i_1 < tags.length; i_1++) {
                 tags.item(i_1).remove();
-            }
-        }
-        for (var i in classToRemove) {
-            var tags = body.getElementsByClassName(classToRemove[i]);
-            for (var i_2 = 0; i_2 < tags.length; i_2++) {
-                tags.item(i_2).remove();
             }
         }
         if (body.innerText.length < MinTextSize) {
