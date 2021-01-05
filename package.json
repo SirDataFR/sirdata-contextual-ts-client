@@ -47,6 +47,6 @@
     "browserify": "^16.5.0",
     "concat": "^1.0.3",
     "butternut": "^0.4.6",
-    "axios": "^0.19.0"
+    "axios": "^0.21.1"
   }
 }
