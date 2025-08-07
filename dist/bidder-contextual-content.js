@@ -40,7 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var http_1 = require("./http");
 var contextual_1 = require("./rest/contextual");
 var page_categorization_response_1 = require("./models/page_categorization_response");
-exports.apiUrl = "https://contextual-content.bidder.sirdata.io/api/v1/public";
+exports.apiUrl = "https://contextual-content.sirdata.io/api/v1/public";
 var objectPerToken = new Map();
 var cacheUrlCategorized = new Map();
 function NewContextual(token) {
